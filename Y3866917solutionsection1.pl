@@ -129,3 +129,26 @@ line(Line, ListOfStations) :- setof(X, station_on_line(X, Line), ListOfStations)
 %
 % ?- line(Line, ["EC", "EM", "OC", "PA", "WA"]).
 % Line = bakerloo.
+
+% ------ Question 6
+
+% Get the list of Lines matching Station, and then output its length to NumberOfLines. 
+station_numlines(Station, NumberOfLines) :- station(Station, Lines), length(Lines, NumberOfLines).
+
+% Test cases:
+% ?- station_numlines("AL", NumberOfLines).
+% NumberOfLines = 1.
+% 
+% ?- station_numlines("EM", NumberOfLines).
+% NumberOfLines = 2.
+% 
+% ?- station_numlines("OC", NumberOfLines).
+% NumberOfLines = 3.
+% 
+% ?- station_numlines(Station, 2).
+% Station = "EM" ;
+% Station = "KX" ;
+% Station = "LS" ;
+% Station = "TC" ;
+% Station = "WS".
+

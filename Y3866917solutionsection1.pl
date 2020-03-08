@@ -152,3 +152,21 @@ station_numlines(Station, NumberOfLines) :- station(Station, Lines), length(Line
 % Station = "TC" ;
 % Station = "WS".
 
+
+% ------ Question 7
+
+% Gets the number of lines at the station, and if there are more than one, then this is an interchange.
+is_interchange(Station) :- station_numlines(Station, NumberOfLines), NumberOfLines > 1.
+
+% This first checks that NonInterStation is not an interchange an that InterchangeStation is. Then it checks to see if the two are adjacent 
+% in either direction, using disjunction (;). 
+adjacent2interchange(NonInterStation, InterchangeStation) :- not(is_interchange(NonInterStation)), (adjacent(NonInterStation, InterchangeStation);adjacent(InterchangeStation, NonInterStation)).
+
+% Test cases:
+% ?- adjacent2interchange("CL", InterchangeStation).
+% InterchangeStation = "LS" ;
+% InterchangeStation = "TC".
+% 
+% ?- adjacent2interchange("TC", InterchangeStation).
+% false.
+

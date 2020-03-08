@@ -1,5 +1,7 @@
 
 % ------ Question 1
+
+% Just state the facts according to the diagram
 station("AL", [metropolitan]).
 station("BG", [central]).
 station("BR", [victoria]).
@@ -24,6 +26,7 @@ station("WS", [northern, victoria]).
 
 % ------ Question 2
 
+% Asks if there is any fact assigning Station to a particular list of lines
 station_exists(Station) :- station(Station, _).
 
 % Test cases
@@ -40,6 +43,8 @@ station_exists(Station) :- station(Station, _).
 
 
 % ------ Question 3
+
+% List the facts according to the diagram
 
 % Bakerloo line
 adjacent("WA", "PA").
@@ -76,7 +81,11 @@ adjacent("VI", "BR").
 
 % ------ Question 4
 
+% A station is on a line if there is some list of Lines which is both assigned to Station in a fact (from Q1)
+% and Line is in that list of lines. This is useful in seeing if two stations are on the same line.
 station_on_line(Station, Line) :- station(Station, Lines), member(Line, Lines).
+
+% Two stations are on the same line if station_on_line is true for both of them, for the same line.
 sameline(Station1, Station2, Line) :- station_on_line(Station1, Line), station_on_line(Station2, Line).
 
 % Test cases:

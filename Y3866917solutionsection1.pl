@@ -101,3 +101,22 @@ sameline(Station1, Station2, Line) :- station_on_line(Station1, Line), station_o
 % Station = "WS",
 % Line = northern ;
 % false.
+
+% ------ Question 5
+
+% The `setof` function collects all X for which station_on_line(X, Line) (that is, all
+% the stations on the line Line), and puts them in ListOfStations.
+line(Line, ListOfStations) :- setof(X, station_on_line(X, Line), ListOfStations).
+
+% Test cases:
+% ?- line(metropolitan, ListOfStations).
+% ListOfStations = ["AL", "BS", "FR", "KX", "LS"].
+% 
+% ?- line(northern, ListOfStations).
+% ListOfStations = ["EM", "EU", "KE", "TC", "WS"].
+% 
+% ?- line(victoria, ["BR", "VI", "OC", "WS", "KX"]).
+% false. 
+%
+% ?- line(Line, ["EC", "EM", "OC", "PA", "WA"]).
+% Line = bakerloo.

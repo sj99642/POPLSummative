@@ -47,37 +47,41 @@ station_exists(Station) :- station(Station, _).
 % List the facts according to the diagram
 
 % Bakerloo line
-adjacent("WA", "PA").
-adjacent("PA", "OC").
-adjacent("OC", "EM").
-adjacent("EM", "EC").
+adj("WA", "PA").
+adj("PA", "OC").
+adj("OC", "EM").
+adj("EM", "EC").
 
 % Central line
-adjacent("NH", "LG").
-adjacent("LG", "OC").
-adjacent("OC", "TC").
-adjacent("TC", "CL").
-adjacent("CL", "LS").
-adjacent("LS", "BG").
+adj("NH", "LG").
+adj("LG", "OC").
+adj("OC", "TC").
+adj("TC", "CL").
+adj("CL", "LS").
+adj("LS", "BG").
 
 % Metropolitan line
-adjacent("FR", "BS").
-adjacent("BS", "KX").
-adjacent("KX", "LS").
-adjacent("LS", "AL").
+adj("FR", "BS").
+adj("BS", "KX").
+adj("KX", "LS").
+adj("LS", "AL").
 
 % Northern line
-adjacent("EU", "WS").
-adjacent("WS", "TC").
-adjacent("TC", "EM").
-adjacent("EM", "KE").
+adj("EU", "WS").
+adj("WS", "TC").
+adj("TC", "EM").
+adj("EM", "KE").
 
 % Victoria line
-adjacent("FP", "KX").
-adjacent("KX", "WS").
-adjacent("WS", "OC").
-adjacent("OC", "VI").
-adjacent("VI", "BR").
+adj("FP", "KX").
+adj("KX", "WS").
+adj("WS", "OC").
+adj("OC", "VI").
+adj("VI", "BR").
+
+% Provide a rule to see if two stations are adjacent in either direction
+adjacent(Station1, Station2) :- adj(Station1, Station2).
+adjacent(Station1, Station2) :- adj(Station2, Station1).
 
 % ------ Question 4
 
@@ -158,9 +162,8 @@ station_numlines(Station, NumberOfLines) :- station(Station, Lines), length(Line
 % Gets the number of lines at the station, and if there are more than one, then this is an interchange.
 is_interchange(Station) :- station_numlines(Station, NumberOfLines), NumberOfLines > 1.
 
-% This first checks that NonInterStation is not an interchange an that InterchangeStation is. Then it checks to see if the two are adjacent 
-% in either direction, using disjunction (;). 
-adjacent2interchange(NonInterStation, InterchangeStation) :- not(is_interchange(NonInterStation)), (adjacent(NonInterStation, InterchangeStation);adjacent(InterchangeStation, NonInterStation)).
+% This first checks that NonInterStation is not an interchange an that InterchangeStation is. Then it checks to see if the two are adjacent. 
+adjacent2interchange(NonInterStation, InterchangeStation) :- not(is_interchange(NonInterStation)), is_interchange(InterchangeStation), adjacent(NonInterStation, InterchangeStation).
 
 % Test cases:
 % ?- adjacent2interchange("CL", InterchangeStation).
@@ -170,3 +173,11 @@ adjacent2interchange(NonInterStation, InterchangeStation) :- not(is_interchange(
 % ?- adjacent2interchange("TC", InterchangeStation).
 % false.
 
+
+% ------ Question 8
+
+% Count occurrences of 
+
+% Base case: two adjacent stations already form a route
+route(From, To, Route) :- adjacent(From, To), Route=[From, To].
+route(From, To, Route) :- adjacent(From, X), length(setof(X, Route)) =< 1, route(X, To, R), Route=[From|R].

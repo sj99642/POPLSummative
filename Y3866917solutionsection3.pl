@@ -6,14 +6,14 @@
 sum([H], H).
 
 % Find the sum of the tail, then the total sum is the head plus this inner sum. 
-sum([H1,H2|T], Sum) :- sum([H1+H2|T], Sum).
+sum([H1,H2|T], Sum) :- sum([H2|T], InnerSum), Sum is InnerSum+H1.
 
 % Test cases:
-% ?- sum([1, 2, 3], Length)
-% Length = 6. 
+% ?- sum([1, 2, 3], Length).
+% Length = 6 . 
 %
 % ?- sum([1, 2, 3, 4], 10).
-% true. 
+% true . 
 
 
 % Question 2 is in Scheme

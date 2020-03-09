@@ -28,8 +28,8 @@
 ; Each element must be at least as great as the one to its right
 (define (desc? lst)
   (if (= (length lst) 1)
-      #t
-      (and
+      #t    ; True for any list of length 1
+      (and  ; Recursive case: descending if element 1 >= element 2, and the rest of the list is descending
            (>= (car lst) (car (cdr lst)))
            (desc? (cdr lst)))
       )

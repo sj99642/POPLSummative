@@ -15,7 +15,7 @@
     ; It also appears from the examples that the actual incrementing/decrementing of money is
     ; to be done separately, not automatically. 
     (define (randomnum)
-      (define rand (round (+ (* (random) 48) 2)))
+      (define rand (exact-round (+ (* (random) 48) 2)))
       (begin
         (printf "The random number is: ~a\n" rand)
         (printf "Game Player, your number is: ~a\n" number)
@@ -65,20 +65,27 @@
         )
       )
     )
+
+    ; This procedure is returned if anything other than the four recognised functions is requested
+    ; Returning a string would make (P1 'increase) return a string. Returning a function like this makes
+    ; ((P1 'increase)) return a string instead, as in the example. 
+    (define (unknown)
+      (string-append "Unknown request " (symbol->string request))
+    )
     ; Using a case statement to return the right procedure, or return an error if it is not recognised
     (case request
       ('randomnum randomnum)
       ('increasemoney increasemoney)
       ('decreasemoney decreasemoney)
       ('topup topup)
-      (else (string-append "Unknown request " (symbol->string request)))
+      (else unknown)
     ))
   ; Evaluated when a-game is run. If `number` is not between 2 and 30, this prints a message
   ; and returns nothing. Otherwise, it returns the-game-number so that the player object can be interacted with. 
   (if (or (> number 30) (< number 2))
-      (display "Error: number is out of bounds (must be between 2 and 30)")
+      (display "Error: number is out of bounds (must be between 2 and 30)\n")
       (begin
-        (printf "Game Player, you decide to go with number: ~a" number)
+        (printf "Game Player, you decide to go with number: ~a\n" number)
         the-game-number
         )
     )

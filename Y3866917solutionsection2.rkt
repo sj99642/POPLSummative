@@ -122,7 +122,8 @@
 ;   given: "Unknown request randomnumber"
 ;   arguments...: [none]
 ; > ((P1 'randomnum))
-; The random number is: 39.0Game Player, your number is: 4If your number is less than or equal the random number, you lose, otherwise you win.
+; The random number is: 39.0Game Player, your number is: 4
+; If your number is less than or equal the random number, you lose, otherwise you win.
 ; Unfortunately, you have lost, Game Machine will deduct 2 pounds from your account
 ; > ((P1 'decreasemoney))
 ; Game Player, previously you had: 4 pounds
@@ -136,7 +137,8 @@
 ; Game Machine, before you had: 2 pounds
 ; You now have: 3 pounds
 ; > ((P2 'randomnum))
-; The random number is: 12.0Game Player, your number is: 30If your number is less than or equal the random number, you lose, otherwise you win.
+; The random number is: 12.0Game Player, your number is: 30
+; If your number is less than or equal the random number, you lose, otherwise you win.
 ; Great, you have won, Game Machine will add one pound to in your account
 ; > ((P2 'increasemoney))
 ; Game Player, previously you had: 30 pounds
@@ -150,7 +152,8 @@
 ; > game_machine_amount
 ; 15
 ; > ((P1 'randomnum))
-; The random number is: 22.0Game Player, your number is: 2If your number is less than or equal the random number, you lose, otherwise you win.
+; The random number is: 22.0Game Player, your number is: 2
+; If your number is less than or equal the random number, you lose, otherwise you win.
 ; Unfortunately, you have lost, Game Machine will deduct 2 pounds from your account
 ; > (game_machine_increment)
 ; Game Machine, before you had: 15 pounds

@@ -176,8 +176,49 @@ adjacent2interchange(NonInterStation, InterchangeStation) :- not(is_interchange(
 
 % ------ Question 8
 
-% Count occurrences of 
+% Count occurrences of an item in a list
+% count([], Item, 0). % None of the item in an empty list
+% count([Item|T], Item, Count) :- count(T, Item, Z), Count is 1+Z. % If the head is the item then add 1 and recurse
+% count([NotItem|T], Item, Count) :- NotItem\=Item, count(T, Item, Count). % If the head is not the item then just recurse
 
-% Base case: two adjacent stations already form a route
-route(From, To, Route) :- adjacent(From, To), Route=[From, To].
-route(From, To, Route) :- adjacent(From, X), length(setof(X, Route)) =< 1, route(X, To, R), Route=[From|R].
+% % Base case: two adjacent stations already form a route
+% route(From, To, Route) :- adjacent(From, To), Route=[From, To].
+% route(From, To, Route) :- adjacent(From, X), count(Route, X, XCount), XCount=<1, route(X, To, R), Route=[From|R].
+
+% We need 2 rules, one to actually use (route) and one internally, to keep track of visited
+% nodes and prevent cycles (which would cause infinite regress).
+
+% This is effectively the user interface. It runs `scan`, which produced RRoute, the route from To
+% back to From (due to how `scan` works), so this then reverses that.
+route(From, To, Route) :- scan(From, To, [From], RRoute), reverse(RRoute, Route).
+
+% This says that a path from From to To has been found if they are adjacent
+scan(From, To, Path, [To|Path]) :- adjacent(From, To). 
+% This says we have a path from From to To if From is connected to some node X, not equal to To and
+% which has not yet been scanned, and we have a path from X to To.
+scan(From, To, Scanned, Path) :- adjacent(From, X), X\==To, \+member(X, Scanned), scan(X, To, [X|Scanned], Path).
+
+% Test cases:
+% ?- route("TC", "CL", Route).
+% Route = ["TC", "CL"] ;
+% Route = ["TC", "EM", "OC", "WS", "KX", "LS", "CL"] ;
+% Route = ["TC", "OC", "WS", "KX", "LS", "CL"] ;
+% Route = ["TC", "WS", "KX", "LS", "CL"] ;
+% false.
+% 
+% ?- route("FR", "FR", Route).
+% Route = ["FR", "BS", "FR"] ;
+% false.
+% 
+% ?- route("NH", "LG", Route).
+% Route = ["NH", "LG"] ;
+% false.
+% 
+% ?- route("BR", "FP", Route).
+% Route = ["BR", "VI", "OC", "EM", "TC", "CL", "LS", "KX", "FP"] ;
+% Route = ["BR", "VI", "OC", "EM", "TC", "WS", "KX", "FP"] ;
+% Route = ["BR", "VI", "OC", "TC", "CL", "LS", "KX", "FP"] ;
+% Route = ["BR", "VI", "OC", "TC", "WS", "KX", "FP"] ;
+% Route = ["BR", "VI", "OC", "WS", "TC", "CL", "LS", "KX", "FP"] ;
+% Route = ["BR", "VI", "OC", "WS", "KX", "FP"] ;
+% false.

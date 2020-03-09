@@ -222,3 +222,53 @@ scan(From, To, Scanned, Path) :- adjacent(From, X), X\==To, \+member(X, Scanned)
 % Route = ["BR", "VI", "OC", "WS", "TC", "CL", "LS", "KX", "FP"] ;
 % Route = ["BR", "VI", "OC", "WS", "KX", "FP"] ;
 % false.
+
+
+% ------ Question 9
+
+% Uses `route` to find the route. Then the number of connections is one less than the number
+% of stations, so this multiplied by 4 is the time.
+route_times(From, To, Route, Minutes) :- route(From, To, Route), length(Route, RLength), Minutes is (RLength-1)*4.
+
+% Test cases:
+% ?- route_times("FR", "OC", Route, Minutes).
+% Route = ["FR", "BS", "KX", "LS", "CL", "TC", "OC"],
+% Minutes = 24 ;
+% Route = ["FR", "BS", "KX", "LS", "CL", "TC", "EM", "OC"],
+% Minutes = 28 ;
+% Route = ["FR", "BS", "KX", "LS", "CL", "TC", "WS", "OC"],
+% Minutes = 28 ;
+% Route = ["FR", "BS", "KX", "WS", "OC"],
+% Minutes = 16 ;
+% Route = ["FR", "BS", "KX", "WS", "TC", "OC"],
+% Minutes = 20 ;
+% Route = ["FR", "BS", "KX", "WS", "TC", "EM", "OC"],
+% Minutes = 24 ;
+% false.
+
+% ?- route_times("BR", "VI", Route, Minutes).
+% Route = ["BR", "VI"],
+% Minutes = 4 ;
+% false.
+
+% ?- route_times("FR", "AL", Route, Minutes).
+% Route = ["FR", "BS", "KX", "LS", "AL"],
+% Minutes = 16 ;
+% Route = ["FR", "BS", "KX", "WS", "TC", "CL", "LS", "AL"],
+% Minutes = 28 ;
+% Route = ["FR", "BS", "KX", "WS", "OC", "EM", "TC", "CL", "LS"|...],
+% Minutes = 36 ;
+% Route = ["FR", "BS", "KX", "WS", "OC", "TC", "CL", "LS", "AL"],
+% Minutes = 32 ;
+% false.
+
+% ?- route_times("OC", "TC", Route, Minutes).
+% Route = ["OC", "TC"],
+% Minutes = 4 ;
+% Route = ["OC", "EM", "TC"],
+% Minutes = 8 ;
+% Route = ["OC", "WS", "TC"],
+% Minutes = 8 ;
+% Route = ["OC", "WS", "KX", "LS", "CL", "TC"],
+% Minutes = 20 ;
+% false.
